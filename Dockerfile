@@ -8,6 +8,7 @@ RUN apk add --update --no-cache --virtual .build-deps \
     && rm /tmp/requirements.txt \
     && apk del --purge .build-deps
 
+LABEL org.opencontainers.image.source="https://github.com/SlashNephy/denentoshi-line"
 WORKDIR /
 COPY ./app.py /app.py
 ENTRYPOINT ["python", "-u", "/app.py"]
