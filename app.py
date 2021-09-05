@@ -12,7 +12,7 @@ DESCRIPTION = os.getenv("DESCRIPTION", "ボイスチャンネルの名前をラ�
 STATIONS = os.getenv("STATIONS", "渋谷,池尻大橋,三軒茶屋,駒沢大学,桜新町,用賀,二子玉川,二子新地,高津,溝の口,梶が谷,宮崎台,宮前平,鷲沼,たまプラーザ,あざみ野,江田,市が尾,藤が丘,青葉台,田奈,長津田,つくし野,すずかけ台,南町田グランベリーパーク,つきみ野,中央林間").split(",")
 
 
-bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+bot = commands.Bot("!", intents=discord.Intents.all())
 slash = SlashCommand(bot, sync_commands=True)
 
 @bot.event
@@ -23,16 +23,23 @@ async def on_ready():
 async def on_command(ctx: SlashContext):
     if not ctx.guild:
         return await ctx.send(
-            content="このコマンドは DM で使用できません。"
+            content="このコマンドは DM で使用できません。",
+            hidden=True
         )
 
-    channel = ctx.guild.get_channel(VOICE_CHANNEL_ID)
+    channel = ctx.guild.get_channel(int(VOICE_CHANNEL_ID))
     if not channel:
         return await ctx.send(
-            content="ボイスチャンネルの取得に失敗しました。 `VOICE_CHANNEL_ID` が間違っている可能性があります。"
+            content="ボイスチャンネルの取得に失敗しました。 `VOICE_CHANNEL_ID` が間違っている可能性があります。",
+            hidden=True
         )
 
-    await channel.edit(name=random.choice(STATIONS))
+    name = random.choice(STATIONS)
+    await channel.edit(name=name)
+    await ctx.send(
+        content=f"ボイスチャンネルの名前を `{name}` に変更しました。",
+        hidden=True
+    )
 
 if __name__ == "__main__":
     if not TOKEN or not VOICE_CHANNEL_ID:
