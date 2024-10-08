@@ -1,4 +1,4 @@
-FROM python:alpine
+FROM python:alpine@sha256:81362dd1ee15848b118895328e56041149e1521310f238ed5b2cdefe674e6dbf
 
 COPY ./requirements.txt /tmp/requirements.txt
 RUN apk add --update --no-cache --virtual .build-deps \
